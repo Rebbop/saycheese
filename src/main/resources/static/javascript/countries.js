@@ -14,8 +14,16 @@ fetch('http://localhost:8080/countries')
         countries.forEach(country => {
             const li = document.createElement('li');
             const a = document.createElement('a');
-            a.href = `/country/${country.id}`;
+            a.href = `/html/Cheeses.html`;
             a.textContent = country.name;
+            a.addEventListener('click', function(event) {
+                event.preventDefault();
+                console.log('Setting countryId and countryName in sessionStorage:', country.id, country.name);
+                sessionStorage.setItem('countryName', country.name);
+                sessionStorage.setItem('countryId', country.id);
+                console.log('Navigating to:', this.href);
+                window.location.href = this.href;
+            });
             li.appendChild(a);
             countriesList.appendChild(li);
         });

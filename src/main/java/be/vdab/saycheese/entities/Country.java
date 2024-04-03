@@ -12,7 +12,7 @@ public class Country {
     @Id
     private Long id;
 
-    @Column(name = "name") // Ensure this matches the actual column name in your country table
+    @Column(name = "name")
     private String name;
 
     public Long getId() {
