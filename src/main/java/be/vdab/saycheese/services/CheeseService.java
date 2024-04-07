@@ -1,6 +1,7 @@
 package be.vdab.saycheese.services;
 import be.vdab.saycheese.entities.Cheese;
 import be.vdab.saycheese.repositories.CheeseRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,13 @@ public class CheeseService {
     public List<Cheese> searchCheeses(String name) {
         return cheeseRepository.findByNameContainingIgnoreCase(name);
     }
+    @Transactional
     public Cheese likeCheese(Long cheeseId) {
         Cheese cheese = cheeseRepository.findById(cheeseId).orElseThrow(); // handle the exception as you see fit
         cheese.like();
         return cheeseRepository.save(cheese);
     }
+    @Transactional
     public Cheese dislikeCheese(Long cheeseId) {
         Cheese cheese = cheeseRepository.findById(cheeseId).orElseThrow(); // handle the exception as you see fit
         cheese.dislike();
