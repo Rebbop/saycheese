@@ -4,7 +4,7 @@ console.log('countryId:', countryId);
 console.log('countryName:', countryName);
 document.title = countryName;
 
-fetch(`http://localhost:8080/countries/${countryId}/cheeses`)
+fetch(`http://localhost:8080/api/cheeses/countries/${countryId}`)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -19,7 +19,15 @@ fetch(`http://localhost:8080/countries/${countryId}/cheeses`)
         const cheesesList = document.getElementById('cheeses-list');
         cheeses.forEach(cheese => {
             const li = document.createElement('li');
-            li.textContent = cheese.name;
+            const a = document.createElement('a');
+            a.textContent = cheese.name;
+            a.href = '../html/cheeseinfo.html';
+            a.addEventListener('click', (event) => {
+                event.preventDefault();
+                sessionStorage.setItem('cheeseId', cheese.id);
+                window.location.href = a.href;
+            });
+            li.appendChild(a);
             cheesesList.appendChild(li);
         });
     })
