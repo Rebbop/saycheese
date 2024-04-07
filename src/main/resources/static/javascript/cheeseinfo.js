@@ -62,19 +62,38 @@ function fetchCheeseInfo() {
                             animalsElement.textContent = `Animals: ${cheeseDTO.animals.map(animal => animal.name).join(', ')}`;
                             document.body.appendChild(animalsElement);
 
+                            const percentages = calculateLikes(cheeseDTO.likes, cheeseDTO.dislikes);
                             const likesElement = document.createElement('p');
-                            likesElement.textContent = `Likes: ${cheeseDTO.likes}`;
+                            likesElement.textContent = `Likes: ${cheeseDTO.likes} (${percentages[0].toFixed(2)}%)`;
                             document.body.appendChild(likesElement);
 
                             const dislikesElement = document.createElement('p');
-                            dislikesElement.textContent = `Dislikes: ${cheeseDTO.dislikes}`;
+                            dislikesElement.textContent = `Dislikes: ${cheeseDTO.dislikes} (${percentages[1].toFixed(2)}%)`;
                             document.body.appendChild(dislikesElement);
 
+                            const likeButton = document.createElement('button');
+                             likeButton.textContent = 'Like';
+                             document.body.appendChild(likeButton);
+                             addLikeButtonEventListener(likeButton, cheeseDTO, likesElement);
+
+                             const dislikeButton = document.createElement('button');
+                             dislikeButton.textContent = 'Dislike';
+                             document.body.appendChild(dislikeButton);
+                             addDislikeButtonEventListener(dislikeButton, cheeseDTO, dislikesElement);
+
+                            const webpagesElement = document.createElement('p');
+                            webpagesElement.textContent = 'Webpages:';
+                            document.body.appendChild(webpagesElement);
                             cheeseDTO.webpages.forEach(webpage => {
-                                    const webpageElement = document.createElement('a');
-                                    webpageElement.href = webpage.url;
-                                    webpageElement.textContent = webpage.url;
-                                    document.body.appendChild(webpageElement);
+                            const webpageElement = document.createElement('a');
+                            webpageElement.href = webpage.url;
+                            webpageElement.textContent = webpage.url;
+
+                            const webpageContainer = document.createElement('div');
+                            webpageContainer.appendChild(webpageElement);
+
+                            document.body.appendChild(webpageContainer);
+
                             });
                     })
                     .catch(error => console.error('Error:', error))
@@ -85,3 +104,39 @@ function fetchCheeseInfo() {
 }
 
 fetchCheeseInfo();
+function calculateLikes(likes,dislikes){
+    let total = likes + dislikes;
+    if (total === 0) {
+        return [0, 0];
+    }
+    let likesPercent = (likes / total) * 100;
+    let dislikesPercent = (dislikes / total) * 100;
+    return [likesPercent, dislikesPercent];
+}
+function addLikeButtonEventListener(likeButton, cheeseDTO, likesElement) {
+    likeButton.addEventListener('click', () => {
+        fetch(`/api/cheeses/${cheeseId}/like`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                cheeseDTO.likes = data.likes;
+                likesElement.textContent = `Likes: ${cheeseDTO.likes} (${calculateLikes(cheeseDTO.likes, cheeseDTO.dislikes)[0].toFixed(2)}%)`;
+                location.reload();
+            });
+    });
+}
+
+function addDislikeButtonEventListener(dislikeButton, cheeseDTO, dislikesElement) {
+    dislikeButton.addEventListener('click', () => {
+        fetch(`/api/cheeses/${cheeseId}/dislike`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                cheeseDTO.dislikes = data.dislikes;
+                dislikesElement.textContent = `Dislikes: ${cheeseDTO.dislikes} (${calculateLikes(cheeseDTO.likes, cheeseDTO.dislikes)[1].toFixed(2)}%)`;
+                location.reload();
+            });
+    });
+}

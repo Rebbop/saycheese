@@ -154,4 +154,12 @@ public class Cheese {
     public void setWebpages(Webpage webpage) {
         this.webpages = (List<Webpage>) webpage;
     }
+
+    public void like() {
+        this.likes++;
+    }
+    public void dislike() {
+        this.dislikes++;
+    }
 }
+

@@ -40,5 +40,16 @@ public class CheeseController {
     public List<Cheese> searchCheeses(@RequestParam String query) {
         return cheeseService.searchCheeses(query);
     }
+    @PostMapping("/{cheeseId}/like")
+    public ResponseEntity<CheeseDTO> likeCheese(@PathVariable Long cheeseId) {
+        Cheese cheese = cheeseService.likeCheese(cheeseId);
+        return ResponseEntity.ok(cheese.mapToDTO());
+    }
+
+    @PostMapping("/{cheeseId}/dislike")
+    public ResponseEntity<CheeseDTO> dislikeCheese(@PathVariable Long cheeseId) {
+        Cheese cheese = cheeseService.dislikeCheese(cheeseId);
+        return ResponseEntity.ok(cheese.mapToDTO());
+    }
 
 }

@@ -26,5 +26,14 @@ public class CheeseService {
     public List<Cheese> searchCheeses(String name) {
         return cheeseRepository.findByNameContainingIgnoreCase(name);
     }
-
+    public Cheese likeCheese(Long cheeseId) {
+        Cheese cheese = cheeseRepository.findById(cheeseId).orElseThrow(); // handle the exception as you see fit
+        cheese.like();
+        return cheeseRepository.save(cheese);
+    }
+    public Cheese dislikeCheese(Long cheeseId) {
+        Cheese cheese = cheeseRepository.findById(cheeseId).orElseThrow(); // handle the exception as you see fit
+        cheese.dislike();
+        return cheeseRepository.save(cheese);
+    }
 }
