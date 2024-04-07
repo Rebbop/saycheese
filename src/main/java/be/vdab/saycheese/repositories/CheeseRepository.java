@@ -11,4 +11,5 @@ public interface CheeseRepository extends JpaRepository<Cheese, Long>{
     List<Cheese> findByCountryId(Long countryId);
 
     Optional<Cheese> findById (Long id);
+    List<Cheese> findByNameContainingIgnoreCase(String name);
 }

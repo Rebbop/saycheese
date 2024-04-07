@@ -36,4 +36,9 @@ public class CheeseController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/search")
+    public List<Cheese> searchCheeses(@RequestParam String query) {
+        return cheeseService.searchCheeses(query);
+    }
+
 }

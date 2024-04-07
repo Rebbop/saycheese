@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class CheeseService {
 
-    private CheeseRepository cheeseRepository;
+    private final CheeseRepository cheeseRepository;
     @Autowired
     public CheeseService(CheeseRepository cheeseRepository) {
         this.cheeseRepository = cheeseRepository;
@@ -23,4 +23,8 @@ public class CheeseService {
         cheese.ifPresent(c -> System.out.println("Cheese webpages: " + c.getWebpages()));
         return cheese;
     }
+    public List<Cheese> searchCheeses(String name) {
+        return cheeseRepository.findByNameContainingIgnoreCase(name);
+    }
+
 }
